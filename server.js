@@ -4,14 +4,14 @@ const webpack = require('webpack');
 const webpackMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 const config = require('./webpack.config.js');
+const appConfig = require('./config/config');
 
-const ISDEV = process.env.NODE_ENV !== 'production';
-const port = ISDEV ? 3030 : process.env.PORT;
+const port = appConfig.port;
 const app = express();
 
 const start = async () => {
     try {
-        if (ISDEV) {
+        if (appConfig.ISDEV) {
 
             const compiler = webpack(config);
             const middleware = webpackMiddleware(compiler, {
