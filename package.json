@@ -9,7 +9,8 @@
     "node",
     "reactjs",
     "redux",
-    "redux-thunk"
+    "redux-thunk",
+    "express react"
   ],
   "scripts": {
     "test": "",
