@@ -1,8 +1,10 @@
 const path = require('path');
 const express = require('express');
 const webpack = require('webpack');
+const { MongoClient } = require('mongodb');
 const webpackMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
+
 const config = require('./webpack.config.js');
 const appConfig = require('./config/config');
 
@@ -11,6 +13,9 @@ const app = express();
 
 const start = async () => {
     try {
+
+        const db = await MongoClient.connect(appConfig.mongoUrl);
+
         if (appConfig.ISDEV) {
 
             const compiler = webpack(config);
@@ -29,6 +34,7 @@ const start = async () => {
 
             app.use(middleware);
             app.use(webpackHotMiddleware(compiler));
+
             app.get('*', function response(req, res) {
                 res.write(middleware.fileSystem.readFileSync(path.join(__dirname, 'dist/index.html')));
                 res.end();
@@ -40,7 +46,8 @@ const start = async () => {
             });
         }
         app.listen(port, () => { console.log(`💝  server listening on port ${port}`) });
-
+        
+        require('./server/route/users')(app, db);
         require('./server/route/upload')(app);
 
     } catch (e) {
