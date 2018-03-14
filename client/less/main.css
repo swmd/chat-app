@@ -4,3 +4,21 @@ div{
 .main{
   margin-top: 30px;
 }
+
+.login-form{
+  margin-top: 10%;
+}
+.login-form .panel{
+  min-height: 260px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px;
+}
+.login-form .panel-heading{
+  max-height: 100px;
+}
+.login-form .panel-heading h3{
+  margin: 0px;
+}
+.login-form .panel-body input{
+  margin: 10px 3px;
+  padding: 0px 15px;
+}

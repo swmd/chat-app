@@ -6,7 +6,7 @@ const webpackHotMiddleware = require('webpack-hot-middleware');
 const config = require('./webpack.config.js');
 
 const ISDEV = process.env.NODE_ENV !== 'production';
-const port = ISDEV ? 3000 : process.env.PORT;
+const port = ISDEV ? 3030 : process.env.PORT;
 const app = express();
 
 const start = async () => {
