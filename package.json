@@ -6,7 +6,10 @@
   "keywords": [
     "express",
     "webpack",
-    "node"
+    "node",
+    "reactjs",
+    "redux",
+    "redux-thunk"
   ],
   "scripts": {
     "test": "",
