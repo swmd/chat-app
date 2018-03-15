@@ -5,20 +5,57 @@ import { bindActionCreators } from "redux";
 import { browserHistory } from 'react-router';
 import * as userAction from '../../actions/users';
 
+function validateEmail(email) {
+  var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(email);
+}
+
 class Login extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      email: null,
+      pass: null,
+      error: null
+    }
   }
 
   loginHandler() {
-    this.props.setCurrentUser((status) => {
-      if (status) {
-        browserHistory.push('/dashboard')
-      }
+
+    event.preventDefault();
+
+    const { email, pass } = this.state;
+
+    if (!validateEmail(email)) {
+      this.setState({ error: "Invalid Email format!" });
+      return;
+    }
+    // this.props.setCurrentUser((status) => {
+    //   if (status) {
+    //     browserHistory.push('/dashboard')
+    //   }
+    // });
+  }
+
+  signUpHandler() {
+
+  }
+
+  _onChangeMailHander(e) {
+    this.setState({
+      email: e.target.value
+    });
+  }
+
+
+  _onChangePassHander(e) {
+    this.setState({
+      email: e.target.value
     });
   }
 
   render() {
+    const { email, pass, error } = this.state;
     return (
       <div className="container main">
         <div className="col-md-offset-4 col-md-4 login-form">
@@ -27,9 +64,27 @@ class Login extends Component {
               <h3>Login</h3>
             </div>
             <div className="panel-body">
-              <input type="email" name="email" placeholder="Email" className="form-control" />
-              <input type="password" name="pass" placeholder="Password" className="form-control"/>
-              <a className="btn btn-default" onClick={this.loginHandler.bind(this)}> Login</a>
+              {error ? (
+                <div className="alert alert-danger">
+                  <strong>Error!</strong> {error}
+              </div>
+              ) : null}
+              <div className="form-group field">
+                <span className="glyphicon air-icon-user"></span>
+                <input type="email" name="email" placeholder="Your email" className="form-control" onChange={this._onChangeMailHander.bind(this)} value={email} />
+              </div>
+              <div className="form-group field">
+                <span className="glyphicon air-icon-password"></span>
+                <input type="password" name="pass" placeholder="Your password" className="form-control" onChange={this._onChangePassHander.bind(this)} value={pass} />
+              </div>
+              <div className="row button-area">
+                <div className="col-md-offset-1 col-md-5">
+                  <a className="btn btn-success" onClick={this.loginHandler.bind(this)}> Login</a>
+                </div>
+                <div className="col-md-5">
+                  <a className="btn btn-primary" onClick={this.signUpHandler.bind(this)}> Create Account</a>
+                </div>
+              </div>
             </div>
           </div>
         </div>

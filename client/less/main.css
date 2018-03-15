@@ -18,7 +18,24 @@ div{
 .login-form .panel-heading h3{
   margin: 0px;
 }
+.login-form .form-group{
+  position: relative;
+}
+.login-form .form-group span{
+  position: absolute;
+  top: 23%;
+  font-size: 18px;
+  color: #adadad;
+  left: 1%;
+}
 .login-form .panel-body input{
   margin: 10px 3px;
   padding: 0px 15px;
+  padding-left: 10%;
+}
+.login-form .button-area{
+  margin-top: 20px;
+}
+.login-form .button-area a{
+  min-width: 123px;
 }
