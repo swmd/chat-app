@@ -50,7 +50,7 @@ class Login extends Component {
 
   _onChangePassHander(e) {
     this.setState({
-      email: e.target.value
+      pass: e.target.value
     });
   }
 
