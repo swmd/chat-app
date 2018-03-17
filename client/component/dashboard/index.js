@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { browserHistory } from 'react-router';
 import DropzoneComponent from 'react-dropzone-component';
+import { logOutUser } from '../../actions/users';
 
 class DashBoard extends Component {
   constructor(props) {
@@ -22,7 +23,12 @@ class DashBoard extends Component {
     }
   }
   componentWillMount() {
-    if (this.props.currentUser) {
+    if (!this.props.currentUser) {
+      browserHistory.push('/login');
+    }
+  }
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.currentUser) {
       browserHistory.push('/login');
     }
   }
@@ -36,6 +42,7 @@ class DashBoard extends Component {
           </div>
           <div className="panel-body">
             <DropzoneComponent config={componentConfig} eventHandlers={eventHandlers} djsConfig={djsConfig} />
+            <a className="btn btn-primary" onClick={this.props.logOutUser}> Log OUT</a>
           </div>
         </div>
       </div>
@@ -44,16 +51,13 @@ class DashBoard extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({}, dispatch);
+  return bindActionCreators({ logOutUser }, dispatch);
 }
 
 function mapStateToProps(state) {
   return {
-    currentUser: state.currentUser
+    currentUser: state.users.currentUser
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(DashBoard);
+export default connect(mapStateToProps, mapDispatchToProps)(DashBoard);

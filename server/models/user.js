@@ -26,6 +26,14 @@ class UserModel {
             })));
         };
 
+        this.getUserByEmail = async (value) => {
+            return await this.Users.findOne({ email: value });
+        }
+
+        this.getUserByUserName = async (value) => {
+            return await this.Users.findOne({ userName: value });
+        }
+
         this.updateUser = async (id, fields) => {
             return await this.Users.update({
                 _id: this.ObjectId(id)

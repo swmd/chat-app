@@ -11,6 +11,7 @@ function validateEmail(email) {
 }
 
 class Login extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -18,6 +19,21 @@ class Login extends Component {
       pass: null,
       error: null
     }
+  }
+
+  componentWillMount() {
+
+    const { currentUser, error } = this.props;
+    if (!error && currentUser) browserHistory.push('/dashboard');
+    if (error)
+      this.setState({ error: error });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { currentUser, error } = nextProps;
+    if (!error && currentUser) browserHistory.push('/dashboard');
+    if (error)
+      this.setState({ error: error });
   }
 
   loginHandler() {
@@ -35,11 +51,8 @@ class Login extends Component {
       this.setState({ error: "Invalid Password!" });
       return;
     }
-    // this.props.setCurrentUser((status) => {
-    //   if (status) {
-    //     browserHistory.push('/dashboard')
-    //   }
-    // });
+
+    this.props.login(email, pass);
   }
 
   signUpHandler() {
@@ -51,7 +64,6 @@ class Login extends Component {
       email: e.target.value
     });
   }
-
 
   _onChangePassHander(e) {
     this.setState({
@@ -103,7 +115,8 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
   return {
-    currentUser: state.currentUser
+    currentUser: state.users.currentUser,
+    error: state.users.error
   };
 }
 

@@ -1,6 +1,7 @@
 const path = require('path');
 const express = require('express');
 const webpack = require('webpack');
+const bodyParser = require('body-parser');
 const { MongoClient } = require('mongodb');
 const webpackMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
@@ -34,6 +35,7 @@ const start = async () => {
 
             app.use(middleware);
             app.use(webpackHotMiddleware(compiler));
+            app.use(bodyParser.json()); 
 
             app.get('*', function response(req, res) {
                 res.write(middleware.fileSystem.readFileSync(path.join(__dirname, 'dist/index.html')));
@@ -41,6 +43,8 @@ const start = async () => {
             });
         } else {
             app.use(express.static(__dirname + '/dist'));
+            app.use(bodyParser.json()); 
+            
             app.get('*', function response(req, res) {
                 res.sendFile(path.join(__dirname, 'dist/index.html'));
             });
