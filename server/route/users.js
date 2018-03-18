@@ -58,4 +58,20 @@ module.exports = (app, db) => {
       });
     });
   });
+
+  app.post('/checkUserName', (req, res) => {
+    return getUserByUserName(req.body.userName)
+      .then(user => {
+        if (user) res.send({ exist: true });
+        else res.send({ exist: false });
+      })
+  });
+
+  app.post('/checkEmail', (req, res) => {
+    return getUserByEmail(req.body.email)
+      .then(user => {
+        if (user) res.send({ exist: true });
+        else res.send({ exist: false });
+      })
+  })
 }

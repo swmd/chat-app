@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { browserHistory } from 'react-router';
+import axios from 'axios';
 import * as userAction from '../../actions/users';
 
 function formValidation(field, value1, value2) {
@@ -34,7 +35,10 @@ class SignUp extends Component {
       pass: null,
       confirmPass: null,
       userName: null,
-      error: null
+      error: null,
+      e_complete: false,
+      u_complete: false,
+      message: null
     }
   }
 
@@ -57,10 +61,53 @@ class SignUp extends Component {
 
   _onChangeUserNameHander(e) { this.setState({ userName: e.target.value }); }
 
+  checkEmail() {
+    const { email } = this.state;
+    if (!email) return this.setState({ error: "Please Input email!" });
+    let error = formValidation("email", email);
+    if (error) return this.setState({ error: error });
+
+    axios.post('http://localhost:3030/checkEmail', { email })
+      .then((res) => {
+        if (res.data.exist) {
+          this.setState({ error: "This email is already registered!", e_complete: false, message: null });
+        } else {
+          this.setState({ e_complete: true, message: "Available Email!", error: null });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        this.setState({ e_complete: false });
+      });
+
+  }
+
+  checkUserName() {
+
+    const { userName } = this.state;
+    if (!userName) return this.setState({ error: "Please Input user name!" });
+    let error = formValidation("userName", userName);
+    if (error) return this.setState({ error: error });
+
+
+    axios.post('http://localhost:3030/checkUserName', { userName })
+      .then((res) => {
+        if (res.data.exist) {
+          this.setState({ error: "This user name is already registered!", u_complete: false, message: null })
+        } else {
+          this.setState({ u_complete: true, message: "Avalable user name!", error: null });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        this.setState({ u_complete: false });
+      });
+  }
+
   loginHandler() { browserHistory.push('/login') }
 
   signUpHandler() {
-    const { email, pass, confirmPass, userName } = this.state;
+    const { email, pass, confirmPass, userName, e_complete, u_complete } = this.state;
     const userInfo = { email, pass, confirmPass, userName };
     const keys = Object.keys(userInfo);
     for (var i = 0; i < keys.length; i++) {
@@ -70,11 +117,11 @@ class SignUp extends Component {
         return;
       }
     }
-    this.props.SignUp(userInfo);
+    if (e_complete && u_complete) this.props.SignUp(userInfo);
   }
 
   render() {
-    const { email, pass, error, confirmPass, userName } = this.state;
+    const { email, pass, error, confirmPass, userName, message } = this.state;
     return (
       <div className="container main">
         <div className="col-md-offset-4 col-md-4 login-form">
@@ -88,13 +135,31 @@ class SignUp extends Component {
                   <strong>Error!</strong> {error}
                 </div>
               ) : null}
+
+              {
+                message ? (
+                  <div className="alert alert-success">
+                    {message}
+                  </div>
+                ) : null
+              }
               <div className="form-group field">
-                <span className="glyphicon air-icon-user"></span>
-                <input type="email" name="email" placeholder="Your email" className="form-control" onChange={this._onChangeMailHander.bind(this)} value={email} />
+                <div style={{ position: "relative", width: "80%", display: "inline-block" }} >
+                  <span className="glyphicon air-icon-user" style={{ top: "33%" }}></span>
+                  <input type="email" name="email" placeholder="Your email" className="form-control" onChange={this._onChangeMailHander.bind(this)} value={email} />
+                </div>
+                <div style={{ width: "20%", display: "inline-block", position: "relative", top: "-1" }}>
+                  <a className="btn btn-default" onClick={this.checkEmail.bind(this)}> Check</a>
+                </div>
               </div>
               <div className="form-group field">
-                <span className="glyphicon air-icon-user"></span>
-                <input type="email" name="text" placeholder="User Name" className="form-control" onChange={this._onChangeUserNameHander.bind(this)} value={userName} />
+                <div style={{ position: "relative", width: "80%", display: "inline-block" }} >
+                  <span className="glyphicon air-icon-user" style={{ top: "33%" }} ></span>
+                  <input type="email" name="userName" placeholder="User Name" className="form-control" onChange={this._onChangeUserNameHander.bind(this)} value={userName} />
+                </div>
+                <div style={{ width: "20%", display: "inline-block", position: "relative", top: "-1" }}>
+                  <a className="btn btn-default" onClick={this.checkUserName.bind(this)}> Check</a>
+                </div>
               </div>
               <div className="form-group field">
                 <span className="glyphicon air-icon-password"></span>
