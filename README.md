@@ -36,3 +36,9 @@ Your app is ready to be deployed!
 By default, the generated project uses the latest version of React.
 
 You can refer [to the React documentation](https://reactjs.org/docs/react-dom.html#browser-support) for more information about supported browsers.
+
+##Screenshots
+### Login componenent
+![alt text](screenshot/loginview.png "This screen is login compoenent.")
+### Sign componenent
+![alt text](screenshot/signview.png)
