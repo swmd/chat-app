@@ -125,7 +125,7 @@ class SignUp extends Component {
         return;
       }
     }
-    if (e_complete && u_complete) this.props.SignUp(userInfo);
+    if (this.props.SignUp) this.props.SignUp(userInfo);
     else this.setState({ error: "Please check email and user name!", message: null })
   }
 
