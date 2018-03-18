@@ -5,6 +5,7 @@ import { bindActionCreators } from "redux";
 import { browserHistory } from 'react-router';
 import axios from 'axios';
 import * as userAction from '../../actions/users';
+import { isNull } from 'util';
 
 function formValidation(field, value1, value2) {
   switch (field) {
@@ -15,7 +16,7 @@ function formValidation(field, value1, value2) {
       var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(value1) ? false : "Invalid email format!";
     case 'pass':
-      if(!value1) return 'Password must not be empty'
+      if (!value1) return 'Password must not be empty'
       var passwordValid = value1.length >= 8;
       return passwordValid ? false : ' Password is too short!';
     case 'confirmPass':
@@ -61,9 +62,7 @@ class SignUp extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { currentUser, error } = nextProps;
-    if (!error && currentUser) browserHistory.push('/login')
-    if (error) this.setState({ error: error });
+    if (!isNull(nextProps.verify)) browserHistory.push('/login')
   }
 
   _onChangeHandler(e) {
@@ -127,7 +126,7 @@ class SignUp extends Component {
       }
     }
     if (e_complete && u_complete) this.props.SignUp(userInfo);
-    else this.setState({ error: "Please check email and user name!" })
+    else this.setState({ error: "Please check email and user name!", message: null })
   }
 
   render() {
@@ -223,6 +222,7 @@ function mapStateToProps(state) {
   return {
     currentUser: state.users.currentUser,
     error: state.users.error,
+    verify: state.users.verify
   };
 }
 

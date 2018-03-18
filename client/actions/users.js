@@ -39,8 +39,8 @@ export function SignUp(user) {
           let error = response.data.error;
           dispatch({ type: SIGN_UP_FAILD, error });
         } else {
-          let currentUser = response.data.user_id;
-          dispatch({ type: SIGN_UP_SUCCESS, currentUser });
+          let verify = response.data.verify;
+          dispatch({ type: SIGN_UP_SUCCESS, verify });
         }
       })
       .catch(function (error) {

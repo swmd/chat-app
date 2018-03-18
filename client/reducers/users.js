@@ -9,7 +9,8 @@ import {
 
 const INIT_STATE = {
   currentUser: null,
-  error: null
+  error: null,
+  verify: null
 }
 
 const successful = (state, user) => {
@@ -20,10 +21,14 @@ const faild = (state, error) => {
   return { ...state, currentUser: null, error: error };
 }
 
+const reqireVerify = (state, verify) => {
+  return { ...state, currentUser: null, error: null, verify: verify };
+}
+
 export default function users(state = INIT_STATE, action) {
   switch (action.type) {
     case SIGN_UP_SUCCESS:
-      return successful(state, action.currentUser);
+      return reqireVerify(state, action.verify);
     case SIGN_UP_FAILD:
       return faild(state, action.error);
     case LOGIN_SUCCESS:

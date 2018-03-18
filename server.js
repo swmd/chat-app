@@ -51,7 +51,7 @@ const start = async () => {
         }
         app.listen(port, () => { console.log(`💝  server listening on port ${port}`) });
         
-        require('./server/route/users')(app, db);
+        require('./server/route/users')(app, db,appConfig);
         require('./server/route/upload')(app);
 
     } catch (e) {

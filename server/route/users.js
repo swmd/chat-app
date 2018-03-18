@@ -1,8 +1,12 @@
-module.exports = (app, db) => {
+module.exports = (app, db, appConfig) => {
 
   const UserModel = require('../models/user');
   const { ObjectId } = require('mongodb');
   const { hashSync, compareSync, genSaltSync } = require('bcrypt-nodejs');
+  var nodemailer = require('nodemailer');
+  const { randomBytes } = require('crypto');
+  const fs = require('fs');
+  const _ = require('underscore');
 
   const SALT_ROUNDS = 10;
 
@@ -20,6 +24,35 @@ module.exports = (app, db) => {
     return hashSync(pass, genSaltSync(SALT_ROUNDS));
   }
 
+  const randomToken = () => {
+    return randomBytes(43).toString('hex');
+  }
+
+  const getHtml = (templateName, data) => {
+
+    const path = require('path');
+
+    let templatePath = path.join(process.cwd(), `/public/emails/${templateName}.html`);
+    let templateContent = fs.readFileSync(templatePath, 'utf8');
+
+    return _.template(templateContent, data, {
+      interpolate: /\{\{(.+?)\}\}/g
+    });
+  };
+
+  const sendMailer = (to, subject, template, data) => {
+
+    var transporter = nodemailer.createTransport(appConfig.emailer.transport);
+    const mailOptions = { from: appConfig.emailer.from, to: to, subject: subject, html: getHtml(template, data) };
+
+    transporter.sendMail(mailOptions, function (err, info) {
+      if (err)
+        console.log(err)
+      else
+        console.log(info);
+    });
+  }
+
   app.post('/loginWithPass', (req, res) => {
 
     const { email, pass } = req.body;
@@ -29,6 +62,8 @@ module.exports = (app, db) => {
       if (!user) return res.send({ error: "User Not Found!" });
 
       if (!compareSync(pass, user.pass)) return res.send({ error: "Incorrect password!" });
+
+      if (!user.verified) return res.send({ error: "Not verified user!" })
 
       return res.send({ user_id: user._id });
 
@@ -51,9 +86,12 @@ module.exports = (app, db) => {
 
         delete userInfo.confirmPass;
         userInfo.pass = hash(userInfo.pass);
+        let verificationToken = randomToken();
+        userInfo.verificationToken = verificationToken;
 
         userModel.insertUser(userInfo).then(_id => {
-          return res.send({ user_id: _id });
+          sendMailer(userInfo.email, "Verification Your Account!", "verify", { verification_url: `${appConfig.originUrl}/verify/${verificationToken}/${_id}` })
+          return res.send({ verify: false });
         });
       });
     });
@@ -74,4 +112,18 @@ module.exports = (app, db) => {
         else res.send({ exist: false });
       })
   })
+
+  app.post('/verify', (req, res) => {
+
+    userModel.getUserById(req.body.id)
+      .then(user => {
+        if (!user) return res.send({ error: "User not registered!" });
+        if (user.verificationToken != req.body.token) return res.send({ error: "Invalid Token! or used already!" });
+        userModel.updateUser(req.body.id, { verified: true, verificationToken: null })
+          .then(() => {
+            return res.send({ success: true });
+          });
+      });
+  });
+
 }

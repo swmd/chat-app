@@ -12,6 +12,7 @@ import './less/index.css';
 import DashBoard from './component/dashboard';
 import Login from './component/login';
 import SignUp from './component/signup'
+import Verify from './component/signup/verifiy'
 
 const reducer = combineReducers({ ...reducers, routing: routerReducer });
 const store = createStore(reducer, applyMiddleware(thunk));
@@ -24,5 +25,6 @@ const history = syncHistoryWithStore(browserHistory, store)
         <Route path="/login" component={Login} />
         <Route path="/dashboard" component={DashBoard} />
         <Route path="/signup" component={SignUp} />
+        <Route path="/verify/:token/:id" component={Verify} />
       </Router>
     </Provider>, document.getElementById('root'));

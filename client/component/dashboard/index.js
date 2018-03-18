@@ -23,9 +23,9 @@ class DashBoard extends Component {
     }
   }
   componentWillMount() {
-    if (!this.props.currentUser) {
-      browserHistory.push('/login');
-    }
+    // if (!this.props.currentUser) {
+    //   browserHistory.push('/login');
+    // }
   }
   componentWillReceiveProps(nextProps) {
     if (!nextProps.currentUser) {
