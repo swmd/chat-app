@@ -155,25 +155,25 @@ class SignUp extends Component {
               <div className="form-group field">
                 <div style={{ position: "relative", width: "80%", display: "inline-block" }} >
                   <span className="glyphicon air-icon-user" style={{ top: "33%" }}></span>
-                  <input type="email" name="email" placeholder="Your email" className="form-control" onChange={this._onChangeHandler.bind(this)} value={email} />
+                  <input type="email" name="email" placeholder="Your email" className="form-control" onChange={this._onChangeHandler.bind(this)} value={email||''} />
                 </div>
-                <div style={{ width: "20%", display: "inline-block", position: "relative", top: "-1" }}>
+                <div style={{ width: "20%", display: "inline-block", position: "relative", top: "-1px" }}>
                   <a className="btn btn-default" onClick={this.checkEmail.bind(this)}> Check</a>
                 </div>
               </div>
               <div className="form-group field">
                 <div style={{ position: "relative", width: "80%", display: "inline-block" }} >
                   <span className="glyphicon air-icon-user" style={{ top: "33%" }} ></span>
-                  <input type="text" name="userName" placeholder="User Name" className="form-control" onChange={this._onChangeHandler.bind(this)} value={userName} />
+                  <input type="text" name="userName" placeholder="User Name" className="form-control" onChange={this._onChangeHandler.bind(this)} value={userName||''} />
                 </div>
-                <div style={{ width: "20%", display: "inline-block", position: "relative", top: "-1" }}>
+                <div style={{ width: "20%", display: "inline-block", position: "relative", top: "-1px" }}>
                   <a className="btn btn-default" onClick={this.checkUserName.bind(this)}> Check</a>
                 </div>
               </div>
 
               <div className="form-group field">
                 <span className="glyphicon air-icon-kids"></span>
-                <input type="text" name="address" placeholder="Your address" className="form-control" onChange={this._onChangeHandler.bind(this)} value={address} />
+                <input type="text" name="address" placeholder="Your address" className="form-control" onChange={this._onChangeHandler.bind(this)} value={address||''} />
               </div>
 
               <div className="form-group field">
@@ -185,17 +185,17 @@ class SignUp extends Component {
 
               <div className="form-group field">
                 <span className="glyphicon air-icon-calendar-over6months"></span>
-                <input type="date" name="birthday" placeholder="Your address" className="form-control" onChange={this._onChangeHandler.bind(this)} value={birthday} />
+                <input type="date" name="birthday" placeholder="Your address" className="form-control" onChange={this._onChangeHandler.bind(this)} value={birthday||''} />
               </div>
 
               <div className="form-group field">
                 <span className="glyphicon air-icon-password"></span>
-                <input type="password" name="pass" placeholder="Your password" className="form-control" onChange={this._onChangeHandler.bind(this)} value={pass} />
+                <input type="password" name="pass" placeholder="Your password" className="form-control" onChange={this._onChangeHandler.bind(this)} value={pass||''} />
               </div>
 
               <div className="form-group field">
                 <span className="glyphicon air-icon-password"></span>
-                <input type="password" name="confirmPass" placeholder="Confirm pasword" className="form-control" onChange={this._onChangeHandler.bind(this)} value={confirmPass} />
+                <input type="password" name="confirmPass" placeholder="Confirm pasword" className="form-control" onChange={this._onChangeHandler.bind(this)} value={confirmPass||''} />
               </div>
 
               <div className="row button-area">

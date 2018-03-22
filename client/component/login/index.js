@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { browserHistory } from 'react-router';
+import { browserHistory, withRouter } from 'react-router';
 import * as userAction from '../../actions/users';
 
 function validateEmail(email) {
@@ -24,14 +24,14 @@ class Login extends Component {
   componentWillMount() {
 
     const { currentUser, error } = this.props;
-    if (!error && currentUser) browserHistory.push('/dashboard');
+    if (!error && currentUser) browserHistory.push('/chat');
     if (error)
       this.setState({ error: error });
   }
 
   componentWillReceiveProps(nextProps) {
     const { currentUser, error } = nextProps;
-    if (!error && currentUser) browserHistory.push('/dashboard');
+    if (!error && currentUser) browserHistory.push('/chat');
     if (error)
       this.setState({ error: error });
   }
@@ -88,11 +88,13 @@ class Login extends Component {
               ) : null}
               <div className="form-group field">
                 <span className="glyphicon air-icon-user"></span>
-                <input type="email" name="email" placeholder="Your email" className="form-control" onChange={this._onChangeMailHander.bind(this)} value={email} />
+                <input type="email" name="email" placeholder="Your email" className="form-control"
+                  onChange={this._onChangeMailHander.bind(this)} value={email||''} />
               </div>
               <div className="form-group field">
                 <span className="glyphicon air-icon-password"></span>
-                <input type="password" name="pass" placeholder="Your password" className="form-control" onChange={this._onChangePassHander.bind(this)} value={pass} />
+                <input type="password" name="pass" placeholder="Your password" className="form-control"
+                  onChange={this._onChangePassHander.bind(this)} value={pass||''} />
               </div>
               <div className="row button-area">
                 <div className="col-md-offset-1 col-md-5">

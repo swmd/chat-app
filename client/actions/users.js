@@ -15,7 +15,7 @@ export function login(email, pass) {
           let error = response.data.error;
           dispatch({ type: LOGIN_FAILD, error });
         } else {
-          let currentUser = response.data.user_id;
+          let currentUser = response.data.user;
           dispatch({ type: LOGIN_SUCCESS, currentUser });
         }
       })

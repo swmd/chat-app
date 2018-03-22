@@ -34,6 +34,10 @@ class UserModel {
             return await this.Users.findOne({ userName: value });
         }
 
+        this.getUserList = async () => {
+            return await this.Users.find({}).toArray();
+        }
+
         this.updateUser = async (id, fields) => {
             return await this.Users.update({
                 _id: this.ObjectId(id)

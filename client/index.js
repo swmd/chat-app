@@ -9,7 +9,7 @@ import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
 import reducers from './reducers/';
 
 import './less/index.css';
-import DashBoard from './component/dashboard';
+import Chat from './component/chat';
 import Login from './component/login';
 import SignUp from './component/signup'
 import Verify from './component/signup/verifiy'
@@ -18,13 +18,13 @@ const reducer = combineReducers({ ...reducers, routing: routerReducer });
 const store = createStore(reducer, applyMiddleware(thunk));
 const history = syncHistoryWithStore(browserHistory, store)
 
-  ReactDOM.render(
-    <Provider store={store}>
-      <Router history={history}>
-        <Route exact path="/" onEnter={() => browserHistory.push('/Login')} />
-        <Route path="/login" component={Login} />
-        <Route path="/dashboard" component={DashBoard} />
-        <Route path="/signup" component={SignUp} />
-        <Route path="/verify/:token/:id" component={Verify} />
-      </Router>
-    </Provider>, document.getElementById('root'));
+ReactDOM.render(
+  <Provider store={store}>
+    <Router history={history}>
+      <Route exact path="/" onEnter={() => browserHistory.push('/chat')} />
+      <Route path="/login" component={Login} />
+      <Route path="/chat" component={Chat} />
+      <Route path="/signup" component={SignUp} />
+      <Route path="/verify/:token/:id" component={Verify} />
+    </Router>
+  </Provider>, document.getElementById('root'));

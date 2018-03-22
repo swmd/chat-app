@@ -65,7 +65,9 @@ module.exports = (app, db, appConfig) => {
 
       if (!user.verified) return res.send({ error: "Not verified user!" })
 
-      return res.send({ user_id: user._id });
+      const { _id, userName, birthday } = user;
+
+      return res.send({ user: { _id, userName, birthday } });
 
     });
   });
@@ -124,6 +126,23 @@ module.exports = (app, db, appConfig) => {
             return res.send({ success: true });
           });
       });
+  });
+
+  app.post('/getUserList', (req, res) => {
+    let userList = [];
+    return userModel.getUserList()
+      .then(users => {
+        users = users.filter((user) => user.verified);
+        users.map((user) => {
+          const { _id, userName, gender, email } = user;
+          user = { _id, userName, gender, email };
+          userList.push(user);
+        });
+        res.send({ userList });
+      })
+      .catch((err) => {
+        res.send({ userList });
+      })
   });
 
 }
