@@ -16,7 +16,7 @@ class Verify extends Component {
   }
 
   componentWillMount() {
-    axios.post("http://localhost:3030/verify", this.props.params)
+    axios.post(`${window.location.origin}/verify`, this.props.params)
       .then((respone) => {
         if (respone.data.error) {
           this.setState({ error: respone.data.error });

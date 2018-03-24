@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+
 import Gravatar from 'react-gravatar';
 import axios from 'axios';
 
-export default class SideBar extends Component {
+class SideBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -11,15 +14,16 @@ export default class SideBar extends Component {
     this.getUserList();
   }
   getUserList() {
-    axios.post('http://localhost:3030/getUserList')
-      .then((response) => {
-        this.setState({ users: response.data.userList });
-      })
-      .catch((error) => {
-      });
+    if (this.props.currentUser)
+      axios.post(`${window.location.origin}/getUserList`)
+        .then((response) => {
+          this.setState({ users: response.data.userList });
+        })
+        .catch((error) => {
+        });
   }
 
-  getUserTemplate(user,key) {
+  getUserTemplate(user, key) {
     return (
       <a className="lsit-group-item" key={key}>
         <div className="row" >
@@ -55,3 +59,15 @@ export default class SideBar extends Component {
     );
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({}, dispatch);
+}
+
+function mapStateToProps(state) {
+  return {
+    currentUser: state.users.currentUser
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SideBar);

@@ -8,14 +8,29 @@ import Header from './header';
 import SideBar from './sidebar';
 import Room from './room';
 import Footer from './footer';
+import io from "socket.io-client";
+const socket = io(`${window.location.origin}`);
+
 class Chat extends Component {
   constructor(props) {
     super(props);
     this.state = {
       messages: []
     };
+    socket.emit('GET_ALL_MESSAGES');
   }
   componentWillMount() {
+
+    socket.on('RECEIVE_ALL_MESSAGE',  (messages)=> {
+      this.setState({messages:messages});
+    });
+
+    socket.on('RECEIVE_MESSAGE', (data) => {
+      const { messages } = this.state;
+      messages.push(data);
+      this.setState({ messages: messages });
+    });
+
     if (!this.props.currentUser) {
       browserHistory.push('/login');
     }
@@ -25,11 +40,7 @@ class Chat extends Component {
       browserHistory.push('/login');
     }
   }
-  addMessage(msg) {
-    const { messages } = this.state;
-    messages.push(msg);
-    this.setState({ messages: messages });
-  }
+
   render() {
     const { messages } = this.state;
     return (
@@ -38,7 +49,7 @@ class Chat extends Component {
         <div className="container-fluid">
           <Room messages={messages} />
           <SideBar />
-          <Footer addMessage={this.addMessage.bind(this)} currentUser={this.props.currentUser} />
+          <Footer currentUser={this.props.currentUser} />
         </div>
       </div>
     );

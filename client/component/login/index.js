@@ -22,7 +22,7 @@ class Login extends Component {
   }
 
   componentWillMount() {
-
+    
     const { currentUser, error } = this.props;
     if (!error && currentUser) browserHistory.push('/chat');
     if (error)

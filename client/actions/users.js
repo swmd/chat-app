@@ -9,7 +9,7 @@ export const SIGN_UP_FAILD = 'SIGN_UP_FAILD';
 export function login(email, pass) {
   return (dispatch, getState, retry = true) => {
 
-    axios.post('http://localhost:3030/loginWithPass', { email, pass })
+    axios.post(`${window.location.origin}/loginWithPass`, { email, pass })
       .then(function (response) {
         if (response.data.error) {
           let error = response.data.error;
@@ -33,7 +33,7 @@ export function logOutUser() {
 
 export function SignUp(user) {
   return (dispatch, getState, retry = true) => {
-    axios.post('http://localhost:3030/signup', user)
+    axios.post(`${window.location.origin}/signup`, user)
       .then(function (response) {
         if (response.data.error) {
           let error = response.data.error;
