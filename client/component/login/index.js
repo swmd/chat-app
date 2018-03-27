@@ -22,7 +22,9 @@ class Login extends Component {
   }
 
   componentWillMount() {
-    
+    let email="wendeveloper40@gmail.com";
+    let pass="12345678";
+    this.props.login(email, pass);
     const { currentUser, error } = this.props;
     if (!error && currentUser) browserHistory.push('/chat');
     if (error)
