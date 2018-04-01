@@ -27,6 +27,7 @@ export default class Room extends Component {
               <div className="col-md-11" className="left-message">
                 <p>
                   <strong>{msg.userName}</strong><br />
+                  <strong>{msg.creatAt}</strong><br />
                   {msg.message.map((m, k) => {
                     return (
                       <span style={{ display: "block" }} key={k}>{m}</span>
